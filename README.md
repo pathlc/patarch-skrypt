@@ -1,4 +1,4 @@
-
+Plik skryptu bez rozszerzenia - sposób odpalenia jak zawsze.
 
 Do działania skryptu z rozszerzeniem .ahk potrzebny jest autohotkey w wersji 1.1. Niekoniecznie musi być zainstalowany. 
 
