@@ -588,6 +588,88 @@ ICD10 := % SelectedValue
 ICDfill()
 return
 
+:*:xpdl::
+Sleep 50
+InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: cervical SCC 6: melanoma
+If mode=1
+    dgn := % NSCLC
+Else if mode=2
+    dgn := % HNSCC
+Else if mode=3
+    dgn := % TNBC
+Else if mode=4
+    dgn := % UC
+Else if mode=5
+    dgn := % CSCC
+Else if mode=6
+    dgn := % Melanoma
+
+NSCLC :=
+(
+"[TPS: <1`%. Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
+[TPS: 1-49`%. Ekspresja PD-L1 w około ][`% komórek nowotworu.]
+[TPS: ≥50`%. Ekspresja PD-L1 w powyżej 50`% komórek nowotworu.]
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+HNSCC :=
+(
+"[Wynik pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥1.]
+[Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
+[Wartość CPS: ][].
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+TNBC :=
+(
+"[Wynik pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥10.]
+[Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <10.]
+[Wartość CPS: ][].
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+UC :=
+(
+"[Wynik negatywny (TPS: <1`%). Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
+[Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
+[Wartość TPS: ][]`%.
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+
+CSCC :=
+(
+"[Wynik pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥1.]
+[Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
+[Wartość CPS: ][].
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+Melanoma :=
+
+(
+"[Wynik negatywny (TPS: <1`%). Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
+[Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
+[Wartość TPS: ][]`%.
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+ICDO :=
+ICD10 := "Z03"
+ICDfill()
+return
 
 :*:xcx:: ;to co w funkcji tylko bez ^{home}
 dgn :=
