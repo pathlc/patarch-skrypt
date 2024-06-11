@@ -104,6 +104,7 @@ xuropap - nieinwazyjny urotelialny
 xteratoma - potworniak dojrzały jajnika
 xcin(od 0-3) - dysplazja szyjki macicy, lub jej brak (0)
 xplazmo - chronic endometritis z CD138
+xpdl - skrypt na PD-L1 (wybierz numer żeby wybrać nowotwór)
 xtbz - fragment/y tkanki tłuszczowej/włóknistej bez istotnych zmian patologicznych
 xsll - CLL/SLL
 xnschl - Hodgkin NS
