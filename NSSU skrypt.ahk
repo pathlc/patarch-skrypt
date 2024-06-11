@@ -591,7 +591,7 @@ return
 
 :*:xpdl::
 Sleep 50
-InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: cervical SCC 6: melanoma
+InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek
 If mode=1
     dgn := % NSCLC
 Else if mode=2
@@ -604,6 +604,10 @@ Else if mode=5
     dgn := % CSCC
 Else if mode=6
     dgn := % Melanoma
+Else if mode=7
+    dgn := % GEJ
+
+
 
 NSCLC :=
 (
@@ -657,7 +661,6 @@ Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
 Melanoma :=
-
 (
 "[Wynik negatywny (TPS: <1`%). Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
 [Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
@@ -667,11 +670,22 @@ Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
+GEJ :=
+(
+"[Wynik pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥10.]
+[Wynik pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥5.]
+[Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <5.]
+[Wartość CPS: ][].
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+
 ICDO :=
 ICD10 := "Z03"
 ICDfill()
 return
-
 :*:xcx:: ;to co w funkcji tylko bez ^{home}
 dgn :=
 ICDO :=
