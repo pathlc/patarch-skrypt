@@ -591,7 +591,7 @@ return
 
 :*:xpdl::
 Sleep 50
-InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek
+InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 9: generyczny
 If mode=1
     dgn := % NSCLC
 Else if mode=2
@@ -606,7 +606,8 @@ Else if mode=6
     dgn := % Melanoma
 Else if mode=7
     dgn := % GEJ
-
+Else if mode=9
+    dgn := % gen
 
 
 NSCLC :=
@@ -681,11 +682,18 @@ Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
+gen :=
+(
+"Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
+Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
 
-ICDO :=
-ICD10 := "Z03"
-ICDfill()
+send % dgn
 return
+
 :*:xcx:: ;to co w funkcji tylko bez ^{home}
 dgn :=
 ICDO :=
