@@ -312,7 +312,7 @@ return
 :*:xbaso::
 dgn :="
 (
-Rak podstawnokomórkowy skóry (basal cell carcinoma).
+Rak podstawnokomórkowy (basal cell carcinoma).
 Typ [guzkowy][powierzchowny][naciekający].
 Nie stwierdzono angio- i neuroinwazji.
 Linie cięcia operacyjnego wolne od utkania zmiany. Minimalny margines operacyjny ([boczny][głęboki]): []mm.
