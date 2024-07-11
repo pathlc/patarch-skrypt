@@ -590,24 +590,26 @@ ICDfill()
 return
 
 :*:xpdl::
-Sleep 50
-InputBox, mode, wybierz nowotwór, 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 9: generyczny
+
+InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 8 przełyk płaski 9: generyczny
 If mode=1
-    dgn := % NSCLC
+    Send % NSCLC
 Else if mode=2
-    dgn := % HNSCC
+    Send % HNSCC
 Else if mode=3
-    dgn := % TNBC
+    Send % TNBC
 Else if mode=4
-    dgn := % UC
+    Send % UC
 Else if mode=5
-    dgn := % CSCC
+    Send % CSCC
 Else if mode=6
-    dgn := % Melanoma
+    Send % Melanoma
 Else if mode=7
-    dgn := % GEJ
+    Send % GEJ
+Else if mode=8
+    Send % ESCC
 Else if mode=9
-    dgn := % gen
+    Send % gen
 
 
 NSCLC :=
@@ -682,6 +684,16 @@ Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
+ESCC :=
+(
+"[Wynik negatywny (TPS: <1`%). Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
+[Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
+[Wartość TPS: ][]`%.
+----
+Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
 gen :=
 (
 "Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
@@ -691,7 +703,7 @@ Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
-send % dgn
+Send {tab}{tab}Z03+{tab}+{tab}
 return
 
 :*:xcx:: ;to co w funkcji tylko bez ^{home}
