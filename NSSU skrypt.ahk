@@ -591,27 +591,6 @@ return
 
 :*:xpdl::
 
-InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 8 przełyk płaski 9: generyczny
-If mode=1
-    Send % NSCLC
-Else if mode=2
-    Send % HNSCC
-Else if mode=3
-    Send % TNBC
-Else if mode=4
-    Send % UC
-Else if mode=5
-    Send % CSCC
-Else if mode=6
-    Send % Melanoma
-Else if mode=7
-    Send % GEJ
-Else if mode=8
-    Send % ESCC
-Else if mode=9
-    Send % gen
-
-
 NSCLC :=
 (
 "[TPS: <1`%. Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
@@ -702,6 +681,26 @@ Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
 Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
+
+InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 8 przełyk płaski 9: generyczny
+If mode=1
+    Send % NSCLC
+Else if mode=2
+    Send % HNSCC
+Else if mode=3
+    Send % TNBC
+Else if mode=4
+    Send % UC
+Else if mode=5
+    Send % CSCC
+Else if mode=6
+    Send % Melanoma
+Else if mode=7
+    Send % GEJ
+Else if mode=8
+    Send % ESCC
+Else if mode=9
+    Send % gen
 
 Send {tab}{tab}Z03+{tab}+{tab}
 return
