@@ -1,9 +1,11 @@
-﻿SetKeyDelay -1,0
+SetKeyDelay, -1
+#Include <FindText>
+
+
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
 
 ^p::
@@ -160,7 +162,7 @@ dgn :="
 (
 Rak niedrobnokomórkowy.
 Immunofenotyp komórek nowotworu: TTF1+=/p40-.
-W całości obraz raka niedrobnokomórkowego, w pierwszym rzędzie gruczołowego (terminologia wg WHO-2021: +'non-small cell carcinoma, favour adenocarcinoma+').
+Zgodnie z terminologią WHO dla drobnych biopsji - obraz raka niedrobnokomórkowego, w pierwszym rzędzie gruczołowego (+'non-small cell carcinoma, favour adenocarcinoma+').
 [Materiał reprezentatywny do badań predykcyjnych.]
 )"
 ICDO := "80463"
@@ -173,7 +175,7 @@ dgn :="
 (
 Rak niedrobnokomórkowy.
 Immunofenotyp komórek nowotworu: TTF1-/p40+=.
-W całości obraz raka niedrobnokomórkowego, w pierwszym rzędzie płaskonabłonkowego (terminologia wg WHO-2021: +'non-small cell carcinoma, favour squamous cell carcinoma+').
+Zgodnie z terminologią WHO dla drobnych biopsji - obraz raka niedrobnokomórkowego, w pierwszym rzędzie płaskonabłonkowego (+'non-small cell carcinoma, favour squamous cell carcinoma+').
 [Materiał reprezentatywny do badań predykcyjnych.]
 )"
 ICDO := "80463"
@@ -185,8 +187,9 @@ return
 dgn :="
 (
 Rak niedrobnokomórkowy.
-Immunofenotyp komórek nowotworu: TTF1-/p40-.
-W całości obraz raka niedrobnokomórkowego, inaczej nieokreślonego (terminologia wg WHO-2021: +'non-small cell carcinoma NOS+').
+Immunofenotyp komórek nowotworu: [TTF1-/p40-][TTF1+=/p40+=].
+Zgodnie z terminologią WHO dla drobnych biopsji - obraz raka niedrobnokomórkowego, inaczej nieokreślonego (non-small cell carcinoma NOS).
+[Komentarz: Obecna ekspresja obu markerów immunohistochemicznych w utkaniu nowotworu - co włącza w zakres diagnostyki różnicowej raka gruczołowo-płaskonabłonkowego (adenosquamous carcinoma), niemniej - to rozpoznanie nie może być postawione na podstawie materiału biopsyjnego.]
 [Wskazana dokładna ocena kliniczna celem wykluczenia przerzutowego charakteru zmiany.]
 [Materiał reprezentatywny do badań predykcyjnych.]
 )"
@@ -196,7 +199,7 @@ ICDfill()
 return
 
 :*:xpred::
-Send Materiał z wyżej określonego bloczka parafinowego wybrano i zakwalifikowano do oceny ekspresji czynników predykcyjnych: EGFR, ALK, ROS1, PDL1. Materiał zawiera ponad 100 komórek raka.
+Send Materiał z wyżej określonego bloczka parafinowego wybrano i zakwalifikowano do oceny ekspresji czynników predykcyjnych: EGFR, ALK, ROS1, PD-L1. Materiał zawiera ponad 100 komórek raka.
 return
 
 :*:xnpd::
@@ -526,7 +529,7 @@ return
 :*:xcin2::
 dgn := "
 (
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją umiarkowanego stopnia (HSIL, CIN2).
+Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją średniego stopnia - HSIL (CIN 2).
 )"
 ICDO := "80772"
 ICD10 := "N87"
@@ -536,7 +539,7 @@ return
 :*:xcin3::
 dgn := "
 (
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją dużego stopnia (HSIL, CIN3).
+Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją dużego stopnia - HSIL (CIN 3).
 )"
 ICDO := "80772"
 ICD10 := "N87"
@@ -557,7 +560,7 @@ Wynik badania obecności mutacji POLE w komórkach nowotworowych: [ujemny][dodat
 Podtyp molekularny raka (zgodnie z klasyfikatorem ProMisE): [POLE-ultramutated (POLE EDM)][MMR-deficient (MMR-D)][p53 abnormal (p53 abn)][p53 wild-type (p53 wt)].
 )"
 ICDO := ""
-ICD10 := "C54"
+ICD10 := "Z03"
 ICDfill()
 return
 
