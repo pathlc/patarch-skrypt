@@ -1,5 +1,5 @@
-SetKeyDelay, -1
-#Include <FindText>
+﻿SetKeyDelay, -1
+
 
 
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
@@ -10,6 +10,48 @@ SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 ^p::
 ExitApp
+return
+
+F1:: ;otwieranie skierowania
+IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
+{
+Send ^f
+Sleep 100
+Send status
+Sleep 100
+Send {enter}
+Sleep 100
+Send {Esc}
+Sleep 100
+Send +{tab}
+Sleep 100
+Send {enter}
+MouseMove, (A_ScreenWidth // 2), (A_ScreenHeight // 2), 0
+Sleep 20
+Click
+Send {tab}{tab}{Enter}
+}
+return
+
+^1::
+IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
+{
+Send ^f
+Sleep 100
+Send ami    [
+Sleep 100
+Send {enter}
+Sleep 100
+Send {Esc}
+Sleep 50
+Send {enter}
+Sleep 300
+MouseMove, (A_ScreenWidth // 2), ((A_ScreenHeight // 5)), 0
+Sleep 50
+Click
+Sleep 50
+Send {tab}
+}
 return
 
 
@@ -121,7 +163,7 @@ return
 MsgBox,
 
 (
-
+F1: otwieranie skierowania
 CTRL+1: dodawanie korelacji z poziomu zapisanego rozpoznania (działa w Chrome)
 CTRL+2: lepszy #mat
 CTRL+3: przenoszenie rozpoznania i st. zaawansowania z szablonu (dwie pierwsze linie) do pola podsumowania (kursor w pozycji 0)
@@ -771,4 +813,3 @@ return
 angiofill(){ ;funkcja angio- i neuroinwazja
 Send [Nie stwierdzono cech inwazji naczyń (LVI0).][Obecne cechy angioinwazji (LVI1).]{enter}[Nie stwierdzono cech inwazji okołonerwowej (PNI0).][Obecne cechy inwazji okołonerwowej (PNI1).]
 }
-
