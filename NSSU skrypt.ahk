@@ -642,7 +642,6 @@ NSCLC :=
 [TPS: 1-49`%. Ekspresja PD-L1 w około ][`% komórek nowotworu.]
 [TPS: ≥50`%. Ekspresja PD-L1 w powyżej 50`% komórek nowotworu.]
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -652,7 +651,6 @@ HNSCC :=
 [Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
 [Wartość CPS: ][].
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -662,7 +660,6 @@ TNBC :=
 [Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <10.]
 [Wartość CPS: ][].
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -672,7 +669,6 @@ UC :=
 [Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
 [Wartość TPS: ][]`%.
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -683,7 +679,6 @@ CSCC :=
 [Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
 [Wartość CPS: ][].
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -693,7 +688,6 @@ Melanoma :=
 [Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
 [Wartość TPS: ][]`%.
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -704,7 +698,6 @@ GEJ :=
 [Wynik negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <5.]
 [Wartość CPS: ][].
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -714,7 +707,6 @@ ESCC :=
 [Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
 [Wartość TPS: ][]`%.
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
@@ -723,7 +715,6 @@ gen :=
 "Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
 Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
 ----
-Zastosowano klon 22C3 przeciwciała anty-PD-L1 (Dako).
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
 
