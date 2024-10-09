@@ -348,6 +348,7 @@ return
 dgn :="
 (
 Rozrost guzkowy tarczycy (WHO: thyroid follicular nodular disease).
+[przytarczyca, węzły chłonne]
 )"
 ICDO :=
 ICD10 := "E07.8"
