@@ -16,22 +16,23 @@ F1:: ;otwieranie skierowania
 IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
 {
 Send ^f
-Sleep 100
+Sleep 200
 Send status
-Sleep 100
+Sleep 200
 Send {enter}
-Sleep 100
+Sleep 200
 Send {Esc}
-Sleep 100
+Sleep 200
 Send +{tab}
-Sleep 100
+Sleep 200
 Send {enter}
 MouseMove, (A_ScreenWidth // 2), (A_ScreenHeight // 2), 0
-Sleep 20
+Sleep 300
 Click
-Send {tab}{tab}{Enter}
+Send {Esc}
 }
 return
+
 
 ^1::
 IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
