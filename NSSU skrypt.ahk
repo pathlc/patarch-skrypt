@@ -38,7 +38,6 @@ Send {Esc}
 }
 return
 
-
 ^1::
 IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
 {
