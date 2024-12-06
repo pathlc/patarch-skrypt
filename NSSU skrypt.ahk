@@ -399,7 +399,7 @@ return
 :*:xvs::
 dgn :="
 (
-Brodawka łojotokowa (verruca seborrhoica).
+Brodawka łojotokowa (seborrheic keratosis).
 Linie cięcia operacyjnego wolne od utkania zmiany.
 )"
 ICDO :=
