@@ -1,63 +1,11 @@
-﻿SetKeyDelay, -1
-
+SetKeyDelay, -1
 
 
 #NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance Force
 SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
-
-^p::
-ExitApp
-return
-
-F1:: ;otwieranie skierowania
-IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
-{
-Send ^f
-Sleep 100
-Send status
-Sleep 100
-Send {enter}
-Sleep 100
-Send {Esc}
-Sleep 200
-Send +{tab}
-Sleep 200
-Send {enter}
-MouseMove, (A_ScreenWidth // 2), (A_ScreenHeight // 2), 0
-Sleep 20
-Click
-Sleep 100
-Send {tab}{tab}{Enter}
-MouseMove, (A_ScreenWidth // 2), (A_ScreenHeight // 2), 0
-Sleep 20
-Click
-Send {Esc}
-}
-return
-
-^1::
-IfWinActive, PatARCH [SUKRAKOW] - Google Chrome
-{
-Send ^f
-Sleep 100
-Send ami    [
-Sleep 100
-Send {enter}
-Sleep 100
-Send {Esc}
-Sleep 50
-Send {enter}
-Sleep 300
-MouseMove, (A_ScreenWidth // 2), ((A_ScreenHeight // 5)), 0
-Sleep 50
-Click
-Sleep 50
-Send {tab}
-}
-return
 
 
 ^2:: ;#mat lepszy
@@ -93,30 +41,60 @@ else
   Send ^{home}
 return
 
-^Numpad3::
-Send,  {Space}/ {del}{end}
+^3:: ; przenoszenie rozpoznania i st. zaawansowania z szablonu do pola podsumowania, kursor w pozycji 0
+
+    ClipSaved := ClipboardAll
+    Clipboard := ""
+    Send ^c
+    ClipWait, 0.5
+    if (ErrorLevel) {
+        SoundBeep, 1500, 120
+        Tooltip, Brak zaznaczenia / schowek pusty.
+        SetTimer, __ToolOff, -1200
+        Clipboard := ClipSaved
+        return
+    }
+
+    full := Clipboard
+
+    ; Podział: wszystko przed frazą "Stopień zaawansowania" zostaje na dole,
+    ; a CAŁOŚĆ ląduje w polu wyżej.
+    ; i) = case-insensitive, (?s) = kropka łapie nowe linie
+    pat := "i)(?s)\bstopie(?:ń|n)\s+zaawansowania\b"
+    pos := RegExMatch(full, pat)
+
+    if (!pos) {
+        ; Bez markera nie wiemy gdzie uciąć pierwsze zdanie -> nie kombinujemy.
+        SoundBeep, 1200, 150
+        Tooltip, Nie znalazłem „Stopień zaawansowania…”. Operacja przerwana.
+        SetTimer, __ToolOff, -1600
+        Clipboard := ClipSaved
+        return
+    }
+
+    first := Trim(SubStr(full, 1, pos-1), " `t`r`n")
+
+    ; 1) Zastąp zaznaczenie tylko pierwszym zdaniem (to ma zostać w tym polu)
+    Clipboard := first
+    ClipWait, 0.5
+    Send ^v
+    Sleep, 40
+
+    ; 2) Przejdź do pola wyżej i wklej CAŁY oryginalny tekst
+    Send +{Tab}
+    Sleep, 40
+    Clipboard := full
+    ClipWait, 0.5
+    Send ^v
+    Sleep, 40
+
+    ; Finisz
+    Clipboard := ClipSaved
+    VarSetCapacity(ClipSaved, 0)
 return
 
-
-;^Numpad2:: ;#mat lepszy KSS
-;Send +3mat
-;Sleep 100
-;Send {enter}
-;InputBox, repeat, liczba materiałów
-;Send ^{Home}
-;Loop, %repeat%
- ; {
- ; Send, {end}:
- ; Sleep 50
- ; Send {enter}[]{enter}{Down}
- ; }
-;Send ^{home}
-;return
-
-
-
-^3:: ; przenoszenie rozpoznania i st. zaawansowania z szablonu do pola podsumowania, kursor w pozycji 0
-SendInput, +{down}+{down}^x{del}+{tab}^v{Backspace}{tab}
+__ToolOff:
+Tooltip
 return
 
 ^4:: ; lista gotowców
@@ -137,7 +115,7 @@ xcrad - torbiel korzeniowa
 xczaw - torbiel zawiązkowa
 xapp - ropowiczy wyrostek
 xvs - brodawka łojotokowa
-xctr - torbiel tricholemmalna
+xctr - torbiel włosowa (tricholemmalna)
 xcep - torbiel naskórkowa
 xcc - przewlekłe zapalenie pęcherzyka
 xkam - kamica bez zapalenia
@@ -151,14 +129,14 @@ xlip - tłuszczak
 xalip - naczyniakotłuszczak
 xuropap - nieinwazyjny urotelialny
 xteratoma - potworniak dojrzały jajnika
-xcin(od 0-3) - dysplazja szyjki macicy, lub jej brak (0)
+xcin - dysplazja szyjki macicy (biopsja i konizat)
 xplazmo - chronic endometritis z CD138
 xpdl - skrypt na PD-L1 (wybierz numer żeby wybrać nowotwór)
 xtbz - fragment/y tkanki tłuszczowej/włóknistej bez istotnych zmian patologicznych
 xsll - CLL/SLL
 xnschl - Hodgkin NS
 xcx - Z03
-wwp(m,d,n) nabłonek wielowarstwowy płaski (mianownik, dopełniacz, narzędnik)
+wwp(ki,go,im) nabłonek wielowarstwowy płaski (mianownik, dopełniacz, narzędnik)
 )
 
 return
@@ -168,7 +146,7 @@ return
 MsgBox,
 
 (
-F1: otwieranie skierowania
+
 CTRL+1: dodawanie korelacji z poziomu zapisanego rozpoznania (działa w Chrome)
 CTRL+2: lepszy #mat
 CTRL+3: przenoszenie rozpoznania i st. zaawansowania z szablonu (dwie pierwsze linie) do pola podsumowania (kursor w pozycji 0)
@@ -285,7 +263,7 @@ return
 :*:xctr::
 dgn :="
 (
-Torbiel tricholemmalna.
+Torbiel włosowa (trichilemmal cyst).
 )"
 ICDO :=
 ICD10 := "L72.1"
@@ -350,7 +328,8 @@ ICDfill()
 return
 
 :*:xfnd::
-dgn :="
+Send, +3fnd{space}
+/*dgn :="
 (
 Rozrost guzkowy tarczycy (WHO: thyroid follicular nodular disease).
 [przytarczyca, węzły chłonne]
@@ -358,10 +337,11 @@ Rozrost guzkowy tarczycy (WHO: thyroid follicular nodular disease).
 ICDO :=
 ICD10 := "E07.8"
 ICDfill()
+*/
 return
 
 :*:xbaso::
-dgn :="
+/*dgn :="
 (
 Rak podstawnokomórkowy (basal cell carcinoma).
 Typ [guzkowy][powierzchowny][naciekający].
@@ -371,12 +351,14 @@ Linie cięcia operacyjnego wolne od utkania zmiany. Minimalny margines operacyjn
 ICDO := "80903"
 ICD10 := "C44"
 ICDfill()
+*/
+Send, +3baso{Space}
 return
 
 :*:xtl::
 dgn :="
 (
-Gruczolak cewkowy z dysplazją małego stopnia (tubular adenoma with low grade intraepithelial neoplasia).
+Gruczolak cewkowy z dysplazją małego stopnia (tubular adenoma with low grade dysplasia).
 [Linie cięcia operacyjnego wolne od utkania zmiany.][Brak możliwości oceny marginesów usunięcia zmiany.]
 )"
 ICDO := "82110"
@@ -384,10 +366,21 @@ ICD10 := "D12"
 ICDfill()
 return
 
+:*:xth::
+dgn :="
+(
+Gruczolak cewkowy z dysplazją dużego stopnia (tubular adenoma with high grade dysplasia).
+[Linie cięcia operacyjnego wolne od utkania zmiany.][Brak możliwości oceny marginesów usunięcia zmiany.]
+)"
+ICDO := "82112"
+ICD10 := "D12"
+ICDfill()
+return
+
 :*:xtvl::
 dgn :="
 (
-Gruczolak cewkowo-kosmkowy z dysplazją małego stopnia (tubulovillous adenoma with low grade intraepithelial neoplasia).
+Gruczolak cewkowo-kosmkowy z dysplazją małego stopnia (tubulovillous adenoma with low grade dysplasia).
 [Linie cięcia operacyjnego wolne od utkania zmiany.][Brak możliwości oceny marginesów usunięcia zmiany.]
 )"
 ICDO := "82630"
@@ -395,10 +388,22 @@ ICD10 := "D12"
 ICDfill()
 return
 
+:*:xtvh::
+dgn :="
+(
+Gruczolak cewkowo-kosmkowy z dysplazją dużego stopnia (tubulovillous adenoma with high grade dysplasia).
+[Linie cięcia operacyjnego wolne od utkania zmiany.][Brak możliwości oceny marginesów usunięcia zmiany.]
+)"
+ICDO := "82632"
+ICD10 := "D12"
+ICDfill()
+return
+
+
 :*:xvs::
 dgn :="
 (
-Brodawka łojotokowa (seborrheic keratosis).
+Brodawka łojotokowa (seborrhoeic keratosis).
 Linie cięcia operacyjnego wolne od utkania zmiany.
 )"
 ICDO :=
@@ -532,7 +537,7 @@ dgn := "
 Przekroje węzła chłonnego o strukturze zatartej przez naciek złożony dominująco z małych komórek B oraz rozproszonych większych, typu prolimfocyta/paraimmunoblasta, liczniejszych w wyodrębniających się w utkaniu centrach proliferacji.
 Immunofenotyp komórek: CD3-/CD20+=/CD5+=/CD23+=/cyklinaD1-/CD43+=. Aktywność proliferacyjna zmienna, przeciętnie niska - ok. 5`% komórek nacieku Ki67+=, z podwyższeniem frakcji w obszarach odpowiadających centrom proliferacji - do ok. 10-15`% komórek Ki67+= w tej lokalizacji.
 ----
-Obraz histologiczny odpowiada indolentnemu chłoniakowi z obwodowych limfocytów B, wg WHO: chronic lymphocytic leukaemia/small lymphocytic lymphoma (CLL/SLL).
+Obraz histologiczny odpowiada nieagresywnemu chłoniakowi z obwodowych limfocytów B, wg WHO: chronic lymphocytic leukaemia/small lymphocytic lymphoma (CLL/SLL).
 )"
 ICDO := "98233"
 ICD10 := "C91.1"
@@ -554,53 +559,24 @@ return
 
 
 
-:*:xcin0::
-dgn := "
-(
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) bez cech dysplazji.
-)"
-ICDO := ""
-ICD10 := "z03"
-ICDfill()
+:*:xcin::
+Sleep 50
+InputBox, mode, , 1: biopsja 2: konizat
+If mode=1
+    Send {#}cin_b{enter}
+Else if mode=2
+    Send {#}cin_k{enter}
+
 return
 
-:*:xcin1::
-dgn := "
-(
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją niskiego stopnia (LSIL/CIN1).
-)"
-ICDO := "80770"
-ICD10 := "N87"
-ICDfill()
-return
-
-:*:xcin2::
-dgn := "
-(
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją średniego stopnia - HSIL (CIN 2).
-)"
-ICDO := "80772"
-ICD10 := "N87"
-ICDfill()
-return
-
-:*:xcin3::
-dgn := "
-(
-Fragmenty błony śluzowej okolicy ujścia zewnętrznego kanału szyjki macicy (obejmujące strefę T) z dysplazją dużego stopnia - HSIL (CIN 3).
-)"
-ICDO := "80772"
-ICD10 := "N87"
-ICDfill()
-return
 
 :*:xpromise::
 dgn := "
 (
 Wynik badania obecności mutacji POLE w komórkach nowotworowych: [ujemny][dodatni].
 
-[Nie stwierdzono utraty ekspresji białek odpowiadających za naprawę DNA (MLH1, MSH2, MSH6, PMS2) w komórkach nowotworowych, co nie daje podstaw dla stwierdzenia kancerogenezy drogą niestabilności mikrosatelitarnej. Status MMR: +'proficient+'.]
-[Stwierdzono utratę ekspresji białek odpowiadających za naprawę DNA (utrata: MLH1, PMS2, brak utraty MSH2, MSH6) w komórkach nowotworowych, co wskazuje na kancerogenezę drogą niestabilności mikrosatelitarnej. Status MMR: '+'deficient+'.]
+[Nie stwierdzono utraty ekspresji białek odpowiadających za naprawę DNA (MSH6, PMS2) w komórkach nowotworowych, co nie daje podstaw dla stwierdzenia kancerogenezy drogą niestabilności mikrosatelitarnej. Status MMR: +'proficient+'.]
+[Stwierdzono utratę ekspresji białek odpowiadających za naprawę DNA (utrata ][, brak utraty ][) w komórkach nowotworowych, co wskazuje na kancerogenezę drogą niestabilności mikrosatelitarnej. Status MMR: '+'deficient+'.]
 
 [Nie stwierdzono patologicznej ekspresji białka p53 w komórkach nowotworowych.][Stwierdzono patologiczną ekspresję białka p53 w komórkach nowotworowych.]
 
@@ -640,7 +616,96 @@ ICD10 := % SelectedValue
 ICDfill()
 return
 
+
+
 :*:xpdl::
+Sleep 50
+/*
+
+NSCLC :=
+(
+"Status immunohistochemicznej ekspresji PD-L1:
+[TPS: <1%. Ekspresja PD-L1 w poniżej 1% komórek nowotworu.]
+[TPS: 1-49%. Ekspresja PD-L1 w około ][% komórek nowotworu.]
+[TPS: ≥50%. Ekspresja PD-L1 w powyżej 50% komórek nowotworu.]
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+HNSCC :=
+(
+"[Status immunohistochemicznej ekspresji PD-L1: pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥1. Wartość CPS: ][.]
+[Status immunohistochemicznej ekspresji PD-L1: negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+TNBC :=
+(
+"[Status immunohistochemicznej ekspresji PD-L1: pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥10.]
+[Status immunohistochemicznej ekspresji PD-L1: negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <10.]
+[Wartość CPS: ][].
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+UC :=
+(
+"Status immunohistochemicznej ekspresji PD-L1:
+[Negatywny. Ekspresja PD-L1 w poniżej 1% komórek nowotworu (TPS: <1%).]
+[Pozytywny. Ekspresja PD-L1 w powyżej 1% komórek nowotworu (TPS: ≥1%). Wartość TPS: ][%.]
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+
+CSCC :=
+(
+"[Status immunohistochemicznej ekspresji PD-L1: pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥1. Wartość CPS: ][.]
+[Status immunohistochemicznej ekspresji PD-L1: negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <1.]
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+Melanoma :=
+(
+"Status immunohistochemicznej ekspresji PD-L1:
+[Negatywny. Ekspresja PD-L1 w poniżej 1% komórek nowotworu (TPS: <1%).]
+[Pozytywny. Ekspresja PD-L1 w powyżej 1% komórek nowotworu (TPS: ≥1%). Wartość TPS: ][%.]
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+GEJ :=
+(
+"[Status immunohistochemicznej ekspresji PD-L1: pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥10.]
+[Status immunohistochemicznej ekspresji PD-L1: pozytywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): ≥5.]
+[Status immunohistochemicznej ekspresji PD-L1: negatywny. Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): <5.]
+[Wartość CPS: ][].
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+ESCC :=
+(
+"Status immunohistochemicznej ekspresji PD-L1:
+Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
+Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+
+gen :=
+(
+"Status immunohistochemicznej ekspresji PD-L1:
+Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
+Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
+----
+Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
+)
+*/
+
+/*
 
 NSCLC :=
 (
@@ -709,9 +774,8 @@ Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 
 ESCC :=
 (
-"[Wynik negatywny (TPS: <1`%). Ekspresja PD-L1 w poniżej 1`% komórek nowotworu.]
-[Wynik pozytywny (TPS: ≥1`%). Ekspresja PD-L1 w powyżej 1`% komórek nowotworu.]
-[Wartość TPS: ][]`%.
+"Odsetek komórek nowotworowych z ekspresją PD-L1 (TPS): ok. []`%.
+Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
 ----
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
@@ -723,8 +787,14 @@ Ekspresja PD-L1 oceniana jako +'combined positive score+' (CPS): [].
 ----
 Badanie wykonano na materiale tkankowym z bloczka parafinowego nr []."
 )
+*/
 
-InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek 8 przełyk płaski 9: generyczny
+
+
+/*
+
+
+InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek i przełyk gruczołowy 8 przełyk płaski 9: generyczny
 If mode=1
     Send % NSCLC
 Else if mode=2
@@ -744,8 +814,173 @@ Else if mode=8
 Else if mode=9
     Send % gen
 
-Send {tab}{tab}Z03+{tab}+{tab}
+Send {tab}{tab}Z03+{tab}+{tab}^{home}
 return
+*/
+InputBox, mode, , 1: NSCLC 2: HNSCC 3:TNBC 4: UC 5: szyjka macicy 6: czerniak 7: żołądek i przełyk gruczołowy 8 przełyk płaski 9: generyczny
+If mode=1
+    Send {#}pdl1nsclc{enter}
+Else if mode=2
+    Send {#}pdl1hnscc{enter}
+Else if mode=3
+    Send {#}pdl1tnbc{enter}
+Else if mode=4
+    Send {#}pdl1uc{enter}
+Else if mode=5
+    Send {#}pdl1cc{enter}
+Else if mode=6
+    Send {#}pdl1mel{enter}
+Else if mode=7
+    Send {#}pdl1gej{enter}
+Else if mode=8
+    Send {#}pdl1escc{enter}
+Else if mode=9
+    Send {#}pdl1gen{enter}
+
+return
+
+
+:*:xww::
+Gui, Destroy
+Gui, Font, s10, Arial  ; Ustawienie czcionki: 10-punkt Arial.
+Gui, Add, Text,, Podaj liczbę węzłów chłonnych znalezionych w preparacie:
+Gui, Add, Edit, w30 h20 vNodesFound,
+Gui, Add, Text,, Podaj liczbę węzłów chłonnych ze stwierdzonym utkaniem raka:
+Gui, Add, Edit, w30 h20 vNodesCancer, 0
+Gui, Add, Text,, Podaj maksymalny wymiar przerzutowego utkania (mm) [opcjonalnie]:
+Gui, Add, Edit, w30 h20 vMaxDim,
+Gui, Add, Button, Default gGenerate, Ok
+Gui, Show,, Węzły chłonne
+return
+
+Generate:
+    ; Pobranie danych z pól GUI
+    Gui, Submit, NoHide
+    x := NodesFound
+    y := NodesCancer
+
+    ; Utworzenie linijki A
+    lineA := "Liczba węzłów chłonnych znalezionych w materiale tkankowym: " x ".`nLiczba węzłów chłonnych ze stwierdzonym utkaniem raka: " y "."
+
+    ; Utworzenie dodatkowej linii tylko, gdy pole maksymalnego wymiaru nie jest puste
+    if (MaxDim != "")
+        extraLine := "Maksymalny wymiar przerzutowego utkania: " MaxDim " mm."
+    else
+        extraLine := ""
+
+    ; Utworzenie linijki B tylko, gdy y jest różne od 0
+    if (y != "0" && y != 0)
+        lineB := "[Nie stwierdzono naciekania pozatorebkowego (ENE-).][Obecne naciekanie pozatorebkowe (ENE+).]"
+    else
+        lineB := ""
+
+    ; Łączenie wyniku – extraLine przed linią B
+    output := lineA
+    if (extraLine != "")
+        output .= "`n" extraLine
+    if (lineB != "")
+        output .= "`n" lineB
+
+    ; Zamknięcie GUI
+       Gui, Destroy
+    Sleep, 100
+
+    ; Skopiowanie wyniku do schowka
+    Clipboard := output
+    ClipWait, 1
+
+    ; Wklejenie zawartości schowka w aktywne pole (Ctrl+V)
+    Send, ^v
+    if (y != "0" && y != 0)
+        Send, +{tab}+{tab}
+    else
+        return
+return
+
+GuiEscape:
+    Gui, Destroy
+return
+
+
+:*:xwq::
+Gui, Destroy
+Gui, New, +AlwaysOnTop, Węzły pofragmentowane
+Gui, +LabelXWQ_        ; wszystkie zdarzenia tego GUI trafią do etykiet XWQ_Gui*
+Gui, Font, s10, Arial
+
+; Radio: 1 = brak raka, 2 = stwierdzono raka
+Gui, Add, Radio, vMode gXWQ_Toggle Checked, W pofragmentowanym utkaniu chłonnym – nie stwierdzono utkania raka.
+Gui, Add, Radio,        gXWQ_Toggle,         W pofragmentowanym utkaniu chłonnym – stwierdzono utkanie raka.
+
+Gui, Add, Text, vLblDim Disabled, Maksymalny wymiar przerzutowego utkania (mm) [opcjonalnie]:
+Gui, Add, Edit, vMaxDim w120 Disabled
+
+Gui, Add, Button, Default w110 gXWQ_Generate, OK
+Gui, Show,, Węzły pofragmentowane
+return
+
+XWQ_Toggle:
+    Gui, Submit, NoHide
+    ; Mode = 1 lub 2 (bo zmienna jest przy pierwszym Radio)
+    if (Mode = 2) {
+        GuiControl, Enable, LblDim
+        GuiControl, Enable, MaxDim
+    } else {
+        GuiControl, Disable, LblDim
+        GuiControl, Disable, MaxDim
+        GuiControl,, MaxDim
+    }
+return
+
+; Wklejanie przez schowek z bezpiecznym przywróceniem
+XWQ_PasteViaClipboard(text) {
+    RestoreDelayMs := 220
+    ClipSaved := ClipboardAll
+    Clipboard := ""
+    Sleep, 25
+    Clipboard := text
+    ClipWait, 1
+    if (ErrorLevel) {
+        Clipboard := text
+        ClipWait, 1
+    }
+    SendInput, ^v
+    Sleep, %RestoreDelayMs%
+    Clipboard := ClipSaved
+    VarSetCapacity(ClipSaved, 0)
+}
+
+XWQ_Generate:
+    Gui, Submit, NoHide
+    if (Mode = 1) {
+        output := "W pofragmentowanym utkaniu chłonnym – nie stwierdzono utkania raka."
+    } else if (Mode = 2) {
+        output := "W pofragmentowanym utkaniu chłonnym – stwierdzono utkanie raka."
+        if (MaxDim != "")
+            output .= "`nMaksymalny wymiar przerzutowego utkania: " MaxDim " mm."
+        output .= "`n[Nie stwierdzono naciekania pozatorebkowego (ENE-).][Obecne naciekanie pozatorebkowego (ENE+).]"
+    } else {
+        MsgBox, 48, Błąd, Wybierz jedną z opcji.
+        return
+    }
+
+    Gui, Destroy
+    Sleep, 80
+    XWQ_PasteViaClipboard(output)
+
+    if (Mode = 2) {
+        Sleep, 120
+        Send, +{Tab}+{Tab}
+    }
+return
+
+; Zamknięcia przypięte przez +LabelXWQ_
+XWQ_GuiEscape:
+XWQ_GuiClose:
+    Gui, Destroy
+return
+
+
 
 :*:xcx:: ;to co w funkcji tylko bez ^{home}
 dgn :=
@@ -773,15 +1008,15 @@ Send {Up}{Home}
 return
 
 --------------------------------
-:*:wwpm::
+:*:wwpki::
 Send nabłonek wielowarstwowy płaski
 return
 
-:*:wwpd::
+:*:wwpgo::
 Send nabłonka wielowarstwowego płaskiego
 return
 
-:*:wwpn::
+:*:wwpim::
 Send nabłonkiem wielowarstwowym płaskim
 return
 
@@ -810,3 +1045,4 @@ return
 angiofill(){ ;funkcja angio- i neuroinwazja
 Send [Nie stwierdzono cech inwazji naczyń (LVI0).][Obecne cechy angioinwazji (LVI1).]{enter}[Nie stwierdzono cech inwazji okołonerwowej (PNI0).][Obecne cechy inwazji okołonerwowej (PNI1).]
 }
+
