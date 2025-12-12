@@ -178,7 +178,16 @@ return
 
 
 ^q:: ; skrót do kontrasygnaty przez specjalistę, kursor w oknie rozpoznania
-SendInput {tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{space}{tab}%name%{tab}{space}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}
+
+;SendInput {tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{tab}{space}{tab}%name%{tab}{space}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}+{tab}
+
+Send, ^f
+Sleep 50
+Send, Kontras
+Sleep 20
+Send, {esc}{tab}{space}{tab}%name%{tab}{space}
+return
+
 return
 
 
