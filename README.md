@@ -1,5 +1,7 @@
-Plik skryptu bez rozszerzenia - sposób odpalenia jak zawsze.
+Plik skryptu w wersji ahk V2. 
 
-Do działania skryptu z rozszerzeniem .ahk potrzebny jest autohotkey w wersji 1.1. 
-
-Plik z rozszerzeniem .ahk ma wiele zalet - można go edytować samemu, chociażby w notatniku. Można go też samemu stworzyć kopiując otwarty kod z tej strony do pliku notatnika i zapisując z rozszerzeniem .ahk. 
+Sposób pierwszego odpalenia:
+1. Ściągnij plik .zip (nie.exe) z oficjalnej strony: https://www.autohotkey.com/download/
+2. Ściągnij plik install_ahk2_portable.bat z listy powyżej i odpal w tym samym folderze co poprzednio ściągniety .zip z AutoHotkey (domyślnie folder "Pobrane" w Windows). 
+3. Ściągnij i odpal PatARCH add-on.ahk
+4. Job done
