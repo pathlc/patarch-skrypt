@@ -182,10 +182,12 @@ if ib.Result != "OK"
         return
     }
     Send("^f")
-    Sleep(50)
+    Sleep(100)
     Send("Kontras")
-    Sleep(20)
-    Send("{Esc}{Tab}{Space}{Tab}" name "{Tab}{Space}")
+    Sleep(50)
+    Send("{Esc}")
+    Sleep(50)
+    Send("{Tab}{Space}{Tab}" name "{Tab}{Space}{Ctrl {Up}")
 }
 
 :*:xww::
@@ -368,9 +370,13 @@ global LNC_IsShown := false
 ; ---------- Hotkeys (aktywne tylko gdy GUI jest pokazane) ----------
 #HotIf LNC_IsShown
 NumpadAdd::LNC_AddFound(1)
+F23::LNC_AddFound(1)
 NumpadEnter::LNC_AddPos(1, true)
+F24::LNC_AddPos(1, true)
 Numpad0::LNC_ResetAll()
+F21::LNC_ResetAll()
 NumpadDot::LNC_CopySummary()
+F22::LNC_CopySummary()
 NumpadSub::LNC_Undo()
 #HotIf
 
@@ -429,8 +435,8 @@ LNC_BuildGui() {
   btnReset.OnEvent("Click", (*) => LNC_ResetAll())
   LNC_UI["cbMaxDim"].OnEvent("Click", (*) => LNC_UpdateUI())
 
-  g.OnEvent("Close",  (*) => (g.Hide(), LNC_IsShown := false))
-  g.OnEvent("Escape", (*) => (g.Hide(), LNC_IsShown := false))
+  g.OnEvent("Close",  (*) => (g.Hide(), LNC_IsShown := false, LNC_ResetAll()))
+  g.OnEvent("Escape", (*) => (g.Hide(), LNC_IsShown := false, LNC_ResetAll()))
 
   LNC_UpdateUI()
   return g
@@ -626,6 +632,7 @@ LNC_GetSummaryText() {
 :*:xplazmo::{#}plazmo{Space}
 :*:xnpd::{#}npd{Space}
 :*:xnpc::{#}npc{Space}
+:*:xgastrit::{#}gastrit{Space}
 :*:wwpki::nabłonek wielowarstwowy płaski
 :*:wwpgo::nabłonka wielowarstwowego płaskiego
 :*:wwpim::nabłonkiem wielowarstwowym płaskim
