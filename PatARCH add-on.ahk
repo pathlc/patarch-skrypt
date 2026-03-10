@@ -187,7 +187,7 @@ if ib.Result != "OK"
     Sleep(50)
     Send("{Esc}")
     Sleep(50)
-    Send("{Tab}{Space}{Tab}" name "{Tab}{Space}{Ctrl {Up}")
+    Send("{Tab}{Space}{Tab}" name "{Tab}{Space}{LCtrl up}{RCtrl up}")
 }
 
 :*:xww::
